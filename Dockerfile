@@ -1,17 +1,15 @@
 FROM centos:centos7
-
-MAINTAINER Siarhei Krukau <siarhei.krukau@gmail.com>
+# FORK https://github.com/madhead/docker-oracle-xe
+MAINTAINER Gleb Kuzmenko <bayclosed@gmail.com>
 
 # Pre-requirements
 RUN mkdir -p /run/lock/subsys
 
-RUN yum install -y libaio bc initscripts net-tools; \
-    yum clean all
-
-# Install Oracle XE
-ADD rpm/oracle-xe-11.2.0-1.0.x86_64.rpm.tar.gz /tmp/
-RUN yum localinstall -y /tmp/oracle-xe-11.2.0-1.0.x86_64.rpm; \
-    rm -rf /tmp/oracle-xe-11.2.0-1.0.x86_64.rpm
+RUN yum update -y && \
+    yum install -y libaio bc initscripts net-tools && \
+    yum install -y http://dba.ctbto.org:6560/oracle-xe.rpm && \
+    yum clean all && \
+    rm -f /var/tmp/yum-root-*/oracle-xe.rpm
 
 # Configure instance
 ADD config/xe.rsp config/init.ora config/initXETemp.ora /u01/app/oracle/product/11.2.0/xe/config/scripts/
