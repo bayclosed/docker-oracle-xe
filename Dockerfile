@@ -21,11 +21,24 @@ ENV ORACLE_HOME /u01/app/oracle/product/11.2.0/xe
 ENV ORACLE_SID  XE
 ENV PATH        $ORACLE_HOME/bin:$PATH
 
-RUN /etc/init.d/oracle-xe configure responseFile=/u01/app/oracle/product/11.2.0/xe/config/scripts/xe.rsp
-
 # Run script
 ADD config/start.sh /
 CMD /start.sh
 
+VOLUME /u01/app/oracle/oradata /u01/app/oracle/fast_recovery_area
 EXPOSE 1521
 EXPOSE 8080
+
+# how to build
+# docker build -t bayclosed/oracle-xe .
+
+# how to init
+# docker run --rm -v /path/to/oracle/data:/u01/app/oracle/oradata bayclosed/oracle-xe /etc/init.d/oracle-xe configure responseFile=/u01/app/oracle/product/11.2.0/xe/config/scripts/xe.rsp
+# or
+# docker run --rm -v /path/to/oracle/data:/u01/app/oracle/oradata /path/to/fra:/u01/app/oracle/fast_recovery_area bayclosed/oracle-xe /etc/init.d/oracle-xe configure responseFile=/u01/app/oracle/product/11.2.0/xe/config/scripts/xe.rsp
+
+# how to run
+# docker run -d -p 8089:8080 -p 1521:1521 -v /path/to/oracle/data:/u01/app/oracle/oradata bayclosed/oracle-xe
+# or
+# docker run -d -p 8089:8080 -p 1521:1521 -v /path/to/oracle/data:/u01/app/oracle/oradata /path/to/fra:/u01/app/oracle/fast_recovery_area bayclosed/oracle-xe
+
