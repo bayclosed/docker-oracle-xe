@@ -50,7 +50,12 @@ Just follow the steps above to build this image.
 
 ## How to use
 
-Basically `docker run -p 8089:8080 -p 1521:1521 -d  madhead/docker-oracle-xe` will start new container and bind it's local ports `1521` and `8080` to host's `1521` and `8089` respectively.
+1. Prepare a directory (say, /data/xe) for persisting Oracle XE data.
+
+2. Initialize this storage
+docker run --rm -v /path/to/oracle/dir:/oracle bayclosed/oracle-xe /etc/init.d/oracle-xe configure responseFile=/u01/app/oracle/product/11.2.0/xe/config/scripts/xe.rsp
+
+3. Basically `docker run -p 8089:8080 -p 1521:1521 -d -v /data/xe:/oracle bayclosed/oracle-xe` will start new container and bind it's local ports `1521` and `8080` to host's `1521` and `8089` respectively.
 Read [Docker documentation](http://docs.docker.com/userguide/usingdocker/) for details.
 
 Oracle Web Management Console (apex) will be available at [http://localhost:8089/apex](http://localhost:8089/apex).
@@ -73,4 +78,3 @@ Connect to the database using the following details:
 To build and use this image your host machine need to have at least 2GB of swap.
 This is an Oracle XE limitation, described [here](http://docs.oracle.com/cd/E17781_01/install.112/e18802/toc.htm#XEINL106).
 It is not possible to use `swapon` command from inside the container to increase swap space due to security reasons.
-If you know how to bypass this, please share the knowledge with me.

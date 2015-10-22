@@ -4,13 +4,17 @@
 sed -i -E "s/HOST = [^)]+/HOST = $HOSTNAME/g" $ORACLE_HOME/network/admin/listener.ora
 sed -i -E "s/HOST = [^)]+/HOST = $HOSTNAME/g" $ORACLE_HOME/network/admin/tnsnames.ora
 
+for f in {diag,admin,fast_recovery_area,oradata,oradiag_oracle} product/11.2.0/xe/{dbs,log,config/log}
+do rm -rf /u01/app/oracle/$f && ln -s /oracle/${f//\//_} /u01/app/oracle/$f
+done
+
 while true; do
     pmon=`ps -ef | grep pmon_$ORACLE_SID | grep -v grep`
 
     if [ "$pmon" == "" ]
     then
         date
-        /etc/init.d/oracle-xe start
+        /etc/init.d/oracle-xe start || exit 1
     fi
     sleep 1m
 done;
