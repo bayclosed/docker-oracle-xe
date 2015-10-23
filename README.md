@@ -50,13 +50,16 @@ Just follow the steps above to build this image.
 
 ## How to use
 
-1. Prepare a directory (say, /data/xe) for persisting Oracle XE data.
+# how to init
+docker run --rm -v /path/to/oracle/volume:/oracle bayclosed/oracle-xe /etc/init.d/oracle-xe configure responseFile=/u01/app/oracle/product/11.2.0/xe/config/scripts/xe.rsp
 
-2. Initialize this storage
-docker run --rm -v /path/to/oracle/dir:/oracle bayclosed/oracle-xe /etc/init.d/oracle-xe configure responseFile=/u01/app/oracle/product/11.2.0/xe/config/scripts/xe.rsp
+# how to run
+docker run --name pythia -d -p 8089:8080 -p 1521:1521 -v /path/to/oracle/volume:/oracle bayclosed/oracle-xe
 
-3. Basically `docker run -p 8089:8080 -p 1521:1521 -d -v /data/xe:/oracle bayclosed/oracle-xe` will start new container and bind it's local ports `1521` and `8080` to host's `1521` and `8089` respectively.
-Read [Docker documentation](http://docs.docker.com/userguide/usingdocker/) for details.
+# how to stop gracefully
+docker stop --time=30 pythia
+# or
+docker kill -s TERM pythia
 
 Oracle Web Management Console (apex) will be available at [http://localhost:8089/apex](http://localhost:8089/apex).
 Use the following credentials to login:

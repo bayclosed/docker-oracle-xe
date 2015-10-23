@@ -37,8 +37,13 @@ EXPOSE 8080
 # docker build -t bayclosed/oracle-xe .
 
 # how to init
-# docker run --rm -v /path/to/oracle/dir:/oracle bayclosed/oracle-xe /etc/init.d/oracle-xe configure responseFile=/u01/app/oracle/product/11.2.0/xe/config/scripts/xe.rsp
+# docker run --rm -v /path/to/oracle/volume:/oracle bayclosed/oracle-xe /etc/init.d/oracle-xe configure responseFile=/u01/app/oracle/product/11.2.0/xe/config/scripts/xe.rsp
 
 # how to run
-# docker run -d -p 8089:8080 -p 1521:1521 -v /path/to/oracle/dir:/oracle bayclosed/oracle-xe
+# docker run --name pythia -d -p 8089:8080 -p 1521:1521 -v /path/to/oracle/volume:/oracle bayclosed/oracle-xe
+
+# how to stop gracefully
+# docker stop --time=30 pythia
+# or
+# docker kill -s TERM pythia
 

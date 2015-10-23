@@ -9,13 +9,8 @@ done
 sed -i -E "s/HOST = [^)]+/HOST = $HOSTNAME/g" $ORACLE_HOME/network/admin/listener.ora
 sed -i -E "s/HOST = [^)]+/HOST = $HOSTNAME/g" $ORACLE_HOME/network/admin/tnsnames.ora
 
-while true; do
-    pmon=`ps -ef | grep pmon_$ORACLE_SID | grep -v grep`
+/etc/init.d/oracle-xe start || ( echo 'Cannot startup Oracle XE' ; exit 1 )
+trap "/etc/init.d/oracle-xe stop ; END=1" INT TERM
 
-    if [ "$pmon" == "" ]
-    then
-        date
-        /etc/init.d/oracle-xe start || exit 1
-    fi
-    sleep 1m
-done;
+while [ "$END" == '' ]; do sleep 1; done
+
