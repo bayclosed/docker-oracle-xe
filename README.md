@@ -19,7 +19,7 @@ They are symlinked from /u01/app/oracle/... at startup
 
 ## How to use
 
-# how to init
+### how to init
 
     docker run --rm \
         -v /path/to/oracle/volume:/oracle \
@@ -27,7 +27,7 @@ They are symlinked from /u01/app/oracle/... at startup
         /etc/init.d/oracle-xe \
         configure responseFile=/u01/app/oracle/product/11.2.0/xe/config/scripts/xe.rsp
 
-# how to run
+### how to run
 
     docker run \
         --name pythia -d \
@@ -35,9 +35,9 @@ They are symlinked from /u01/app/oracle/... at startup
         -v /path/to/oracle/volume:/oracle \
         YourRegistry/oracle-xe
 
-# how to stop gracefully
+### how to stop gracefully
 `docker stop --time=30 pythia`
-# or
+### or
 `docker kill -s TERM pythia`
 
 Oracle Web Management Console (apex) will be available at [http://localhost:8089/apex](http://localhost:8089/apex).
