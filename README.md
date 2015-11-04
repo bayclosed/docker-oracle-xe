@@ -13,17 +13,27 @@ They are symlinked from /u01/app/oracle/... at startup
 
 1. Download the [rpm installer](http://www.oracle.com/technetwork/database/database-technologies/express-edition/downloads/index.html).
 1. Unzip it and put `oracle-xe-11.2.0-1.0.x86_64.rpm` to your private http/ftp server
-1. Edit Dockerfile and replace `**your_private_url/oracle-xe-11.2.0-1.0.x86_64.rpm**` with the URL from previous step
+1. Edit Dockerfile and replace `your_private_url/oracle-xe-11.2.0-1.0.x86_64.rpm` with the URL from previous step
 1. Run `docker build -t "YourRegistry/oracle-xe" .` from the root directory of this repo.
 1. You should get your image ready in a few minutes (apart from downloading base `centos:centos7` image).
 
 ## How to use
 
 # how to init
-`docker run --rm -v /path/to/oracle/volume:/oracle YourRegistry/oracle-xe /etc/init.d/oracle-xe configure responseFile=/u01/app/oracle/product/11.2.0/xe/config/scripts/xe.rsp`
+
+    docker run --rm \
+        -v /path/to/oracle/volume:/oracle \
+        YourRegistry/oracle-xe \
+        /etc/init.d/oracle-xe \
+        configure responseFile=/u01/app/oracle/product/11.2.0/xe/config/scripts/xe.rsp
 
 # how to run
-`docker run --name pythia -d -p 8089:8080 -p 1521:1521 -v /path/to/oracle/volume:/oracle YourRegistry/oracle-xe`
+
+    docker run \
+        --name pythia -d \
+        -p 8089:8080 -p 1521:1521  \
+        -v /path/to/oracle/volume:/oracle \
+        YourRegistry/oracle-xe
 
 # how to stop gracefully
 `docker stop --time=30 pythia`
