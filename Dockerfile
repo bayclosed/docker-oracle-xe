@@ -6,7 +6,7 @@ MAINTAINER Gleb Kuzmenko <bayclosed@gmail.com>
 RUN mkdir -p /run/lock/subsys && \
     yum update -y && \
     yum install -y libaio bc initscripts net-tools && \
-    yum install -y <your_private_url_to/oracle-xe-11.2.0-1.0.x86_64.rpm> && \
+    yum install -y your_private_url/oracle-xe-11.2.0-1.0.x86_64.rpm && \
     yum clean all && \
     rm -f /var/tmp/yum-root-*/*.rpm
 
@@ -33,13 +33,13 @@ EXPOSE 1521
 EXPOSE 8080
 
 # how to build
-# docker build -t <YourRegistry>/oracle-xe .
+# docker build -t YourRegistry/oracle-xe .
 
 # how to init
-# docker run --rm -v /path/to/oracle/volume:/oracle <YourRegistry>/oracle-xe /etc/init.d/oracle-xe configure responseFile=/u01/app/oracle/product/11.2.0/xe/config/scripts/xe.rsp
+# docker run --rm -v /path/to/oracle/volume:/oracle YourRegistry/oracle-xe /etc/init.d/oracle-xe configure responseFile=/u01/app/oracle/product/11.2.0/xe/config/scripts/xe.rsp
 
 # how to run
-# docker run --name pythia -d -p 8089:8080 -p 1521:1521 -v /path/to/oracle/volume:/oracle <YourRegistry>/oracle-xe
+# docker run --name pythia -d -p 8089:8080 -p 1521:1521 -v /path/to/oracle/volume:/oracle YourRegistry/oracle-xe
 
 # how to stop gracefully
 # docker stop --time=30 pythia
