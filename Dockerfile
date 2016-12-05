@@ -1,12 +1,13 @@
 FROM centos:centos7
 # FORK https://github.com/madhead/docker-oracle-xe
 MAINTAINER Gleb Kuzmenko <bayclosed@gmail.com>
+ARG oracle_xe_rpm_private_url
 
 # Pre-requirements
 RUN mkdir -p /run/lock/subsys && \
     yum update -y && \
     yum install -y libaio bc initscripts net-tools && \
-    yum install -y your_private_url/oracle-xe-11.2.0-1.0.x86_64.rpm && \
+    yum install -y ${oracle_xe_rpm_private_url} && \
     yum clean all && \
     rm -f /var/tmp/yum-root-*/*.rpm
 
@@ -33,7 +34,7 @@ EXPOSE 1521
 EXPOSE 8080
 
 # how to build
-# docker build -t YourRegistry/oracle-xe .
+# docker build --build-arg oracle_xe_rpm_private_url=http://host-with-xe/path-to/oracle-xe-11.2.0-1.0.x86_64.rpm -t YourRegistry/oracle-xe .
 
 # how to init
 # docker run --rm -v /path/to/oracle/volume:/oracle YourRegistry/oracle-xe /etc/init.d/oracle-xe configure responseFile=/u01/app/oracle/product/11.2.0/xe/config/scripts/xe.rsp
